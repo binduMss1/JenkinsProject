@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<project name="project" default="run">
+  <target name="run" description="">
+    <property name="toolkit.home" value="C:\Program Files\IBM\IIB\10.0.0.5" />
+    <property name="ant.bars.basedir" value="C:\Users\MQUser\IBM\IIBT10\workspace\BARfiles" />
+    <property name="bar.name" value="${ant.bars.basedir}\JenkinsTestBar1.bar" />
+    <property name="workspace.dir" value="C:\Users\MQUser\IBM\IIBT10\workspace" />
+  	<property name="broker" value="TESTNODE_MQUser" />
+  	<property name="executiongroup" value="default" />
+
+    <antcall target="build" />
+  	<antcall target="deploy" />	
+  </target>
+  <target name="build">
+     <echo message="Building the Message Broker Project @ ${workspace.dir}" />
+     <exec executable="${toolkit.home}\tools\mqsicreatebar.exe" spawn="false">
+        <arg value="-data" />
+            <arg value="${workspace.dir}" />
+        <arg value="-b" />
+            <arg value="${bar.name}" />
+        <!-- List all the message flow projects -->
+        <arg value="-p" />
+            <arg value="JenkinsDemo" />
+ 
+        <!-- List all the files to be included in the archive -->
+        <arg value="-o" />
+            <arg value="JenkinsDemo\Test.msgflow" />
+     </exec>
+  </target>
+	<target name="deploy">
+	     <echo message="Deploying the Message Broker Project @ ${workspace.dir}" />
+	     <exec executable="${toolkit.home}\server\bin\mqsideploy.exe" spawn="false">
+	      
+	       <arg value="${broker}" />
+	        <!-- List all the message flow projects -->
+	        <arg value="-e" />
+	            <arg value="${executiongroup}" />
+	 
+	        <!-- List all the files to be included in the archive -->
+	        <arg value="-a" />
+	            <arg value="${bar.name}" />
+	    	     </exec>
+	  </target>
+</project>
