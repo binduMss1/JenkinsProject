@@ -29,6 +29,7 @@
   </target>
 	<target name="deploy">
 	     <echo message="Deploying the Message Broker Project @ ${workspace.dir}" />
+		 <exec executable="${toolkit.home}\server\bin\mqsiprofile.cmd" spawn="false"/>
 	     <exec executable="${toolkit.home}\server\bin\mqsideploy.exe" spawn="false">
 	      
 	       <arg value="${broker}" />
